@@ -23,7 +23,7 @@ export default function Login() {
           appearance={{ theme: ThemeSupa }}
           theme="light"
           providers={[]}
-          redirectTo="/dashboard"
+          redirectTo="http://localhost:3000/dashboard"
         />
       </div>
     </div>
