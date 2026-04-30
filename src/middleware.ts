@@ -48,12 +48,19 @@ export async function middleware(request: NextRequest) {
   // 3. Change the myNewResponse object instead of the supabaseResponse object
   //    before returning it.
 
+  // Protect only dashboard routes - allow public pages
+  const protectedRoutes = ['/dashboard']
+  const isProtectedRoute = protectedRoutes.some(route => 
+    request.nextUrl.pathname.startsWith(route)
+  )
+
   if (
     !user &&
+    isProtectedRoute &&
     !request.nextUrl.pathname.startsWith('/login') &&
     !request.nextUrl.pathname.startsWith('/auth')
   ) {
-    // no user, potentially respond by redirecting the user to the login page
+    // no user, redirect to login for protected routes
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
