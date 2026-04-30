@@ -1,4 +1,4 @@
-import { createServerSupabaseClient } from '@/lib/supabase'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { redirect } from 'next/navigation'
 import TemplateSelector from '@/components/TemplateSelector'
 import OrderForm from '@/components/OrderForm'

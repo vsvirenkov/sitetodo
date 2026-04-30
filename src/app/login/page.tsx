@@ -1,9 +1,11 @@
+'use client'
+
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
-import { createClient } from '@/lib/supabase'
+import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 
 export default function Login() {
-  const supabase = createClient()
+  const supabase = createBrowserSupabaseClient()
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -21,7 +23,7 @@ export default function Login() {
           appearance={{ theme: ThemeSupa }}
           theme="light"
           providers={[]}
-          redirectTo={`${window.location.origin}/dashboard`}
+          redirectTo="/dashboard"
         />
       </div>
     </div>
