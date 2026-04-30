@@ -21,6 +21,14 @@ export default function Home() {
                   Выбрать пакет
                 </a>
               </div>
+              <div className="mt-3 sm:mt-0 sm:ml-3">
+                <a
+                  href="/dashboard"
+                  className="w-full flex items-center justify-center px-8 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
+                >
+                  Личный кабинет
+                </a>
+              </div>
             </div>
           </div>
         </div>
