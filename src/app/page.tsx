@@ -1,6 +1,8 @@
+import ContactForm from '@/components/ContactForm'
+
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="bg-gray-50">
       {/* Hero Section */}
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,17 +46,20 @@ export default function Home() {
             </p>
           </div>
           <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            <div className="bg-white p-6 rounded-lg shadow">
+            <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
+              <div className="text-3xl mb-3">🎨</div>
               <h3 className="text-lg font-medium text-gray-900">Дизайн и разработка</h3>
-              <p className="mt-2 text-gray-500">Современный дизайн и адаптивная верстка</p>
+              <p className="mt-2 text-gray-500">Современный дизайн и адаптивная верстка для всех устройств</p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow">
+            <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
+              <div className="text-3xl mb-3">🌐</div>
               <h3 className="text-lg font-medium text-gray-900">Регистрация домена</h3>
-              <p className="mt-2 text-gray-500">Помощь в выборе и регистрации домена</p>
+              <p className="mt-2 text-gray-500">Помощь в выборе и регистрации домена для вашего сайта</p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow">
+            <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
+              <div className="text-3xl mb-3">🛡️</div>
               <h3 className="text-lg font-medium text-gray-900">Хостинг и поддержка</h3>
-              <p className="mt-2 text-gray-500">Надежный хостинг и техническая поддержка</p>
+              <p className="mt-2 text-gray-500">Надежный хостинг и техническая поддержка вашего проекта</p>
             </div>
           </div>
         </div>
@@ -65,9 +70,13 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-extrabold text-gray-900">Пакеты услуг</h2>
+            <p className="mt-4 text-lg text-gray-500">
+              Выберите подходящий пакет для вашего проекта
+            </p>
           </div>
           <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            <div className="bg-gray-50 p-8 rounded-lg shadow">
+            {/* Базовый */}
+            <div className="bg-gray-50 p-8 rounded-lg shadow hover:shadow-lg transition-shadow">
               <h3 className="text-2xl font-bold text-gray-900">Базовый</h3>
               <p className="mt-4 text-gray-500">Простой сайт без домена и хостинга</p>
               <p className="mt-8">
@@ -87,8 +96,21 @@ export default function Home() {
                   <span className="ml-2 text-gray-500">Форма обратной связи</span>
                 </li>
               </ul>
+              <a
+                href="/dashboard"
+                className="mt-8 w-full flex justify-center py-2 px-4 border border-blue-600 rounded-md text-sm font-medium text-blue-600 hover:bg-blue-50 transition-colors"
+              >
+                Заказать
+              </a>
             </div>
-            <div className="bg-blue-50 p-8 rounded-lg shadow border-2 border-blue-500">
+
+            {/* Стандарт */}
+            <div className="bg-blue-50 p-8 rounded-lg shadow-lg border-2 border-blue-500 relative">
+              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                <span className="bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                  Популярный
+                </span>
+              </div>
               <h3 className="text-2xl font-bold text-gray-900">Стандарт</h3>
               <p className="mt-4 text-gray-500">Сайт с доменом и хостингом</p>
               <p className="mt-8">
@@ -112,8 +134,16 @@ export default function Home() {
                   <span className="ml-2 text-gray-500">SSL сертификат</span>
                 </li>
               </ul>
+              <a
+                href="/dashboard"
+                className="mt-8 w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+              >
+                Заказать
+              </a>
             </div>
-            <div className="bg-gray-50 p-8 rounded-lg shadow">
+
+            {/* Премиум */}
+            <div className="bg-gray-50 p-8 rounded-lg shadow hover:shadow-lg transition-shadow">
               <h3 className="text-2xl font-bold text-gray-900">Премиум</h3>
               <p className="mt-4 text-gray-500">Расширенный сайт с поддержкой</p>
               <p className="mt-8">
@@ -137,13 +167,19 @@ export default function Home() {
                   <span className="ml-2 text-gray-500">Поддержка 6 месяцев</span>
                 </li>
               </ul>
+              <a
+                href="/dashboard"
+                className="mt-8 w-full flex justify-center py-2 px-4 border border-blue-600 rounded-md text-sm font-medium text-blue-600 hover:bg-blue-50 transition-colors"
+              >
+                Заказать
+              </a>
             </div>
           </div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section className="py-16 bg-gray-100">
+      <section id="contact" className="py-16 bg-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-extrabold text-gray-900">Связаться с нами</h2>
@@ -152,32 +188,10 @@ export default function Home() {
             </p>
           </div>
           <div className="mt-10 max-w-md mx-auto">
-            <form className="grid grid-cols-1 gap-6">
-              <input
-                type="text"
-                placeholder="Ваше имя"
-                className="px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-              />
-              <input
-                type="email"
-                placeholder="Email"
-                className="px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-              />
-              <textarea
-                rows={4}
-                placeholder="Опишите ваш проект"
-                className="px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-              ></textarea>
-              <button
-                type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Отправить
-              </button>
-            </form>
+            <ContactForm />
           </div>
         </div>
       </section>
     </div>
-  );
+  )
 }

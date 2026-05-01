@@ -49,7 +49,7 @@ export async function middleware(request: NextRequest) {
   //    before returning it.
 
   // Protect only dashboard routes - allow public pages
-  const protectedRoutes = ['/dashboard']
+  const protectedRoutes = ['/dashboard', '/orders', '/admin']
   const isProtectedRoute = protectedRoutes.some(route => 
     request.nextUrl.pathname.startsWith(route)
   )
