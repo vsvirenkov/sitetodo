@@ -1,4 +1,4 @@
-import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { createAdminSupabaseClient, createServerSupabaseClient } from '@/lib/supabase-server'
 import { NextResponse } from 'next/server'
 
 const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim()).filter(Boolean)
@@ -17,7 +17,8 @@ export async function GET() {
       return NextResponse.json({ error: 'Доступ запрещён' }, { status: 403 })
     }
 
-    const { data, error } = await supabase
+    const adminSupabase = createAdminSupabaseClient()
+    const { data, error } = await adminSupabase
       .from('contacts')
       .select('*')
       .order('created_at', { ascending: false })
