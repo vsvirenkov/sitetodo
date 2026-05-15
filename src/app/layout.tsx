@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SiteForU - Создание сайтов-визиток",
+  title: "SiteToDo - Создание сайтов-визиток",
   description: "Профессиональное создание простых сайтов для вашего бизнеса. Без хлопот с хостингом и доменами.",
 };
 
