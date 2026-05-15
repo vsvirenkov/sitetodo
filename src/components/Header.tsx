@@ -1,36 +1,19 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
-import type { User } from '@supabase/supabase-js'
+import { useState } from 'react'
+import { useAuth } from '@/lib/auth-context'
 
 const ADMIN_EMAILS = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || '').split(',').map(e => e.trim()).filter(Boolean)
 
 export default function Header() {
-  const [user, setUser] = useState<User | null>(null)
+  const { user, signOut } = useAuth()
   const [menuOpen, setMenuOpen] = useState(false)
-  const supabase = createBrowserSupabaseClient()
 
   const isAdmin = user ? ADMIN_EMAILS.includes(user.email || '') : false
 
-  useEffect(() => {
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      setUser(user)
-    }
-    getUser()
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
-    })
-
-    return () => subscription.unsubscribe()
-  }, [])
-
   const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    setUser(null)
+    await signOut()
     window.location.href = '/'
   }
 
