@@ -2,18 +2,17 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { useAuth } from '@/lib/auth-context'
-
-const ADMIN_EMAILS = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || '').split(',').map(e => e.trim()).filter(Boolean)
+import { useSession, signOut } from 'next-auth/react'
 
 export default function Header() {
-  const { user, signOut } = useAuth()
+  const { data: session } = useSession()
+  const user = session?.user
   const [menuOpen, setMenuOpen] = useState(false)
 
-  const isAdmin = user ? ADMIN_EMAILS.includes(user.email || '') : false
+  const isAdmin = user?.role === 'admin'
 
   const handleSignOut = async () => {
-    await signOut()
+    await signOut({ redirect: false })
     window.location.href = '/'
   }
 

@@ -1,20 +1,11 @@
-import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { redirect } from 'next/navigation'
+import { auth } from '@/lib/auth'
 import AdminPanel from '@/components/AdminPanel'
 
-const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim()).filter(Boolean)
-
 export default async function AdminPage() {
-  const supabase = await createServerSupabaseClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect('/login')
-  }
-
-  if (!ADMIN_EMAILS.includes(user.email || '')) {
-    redirect('/')
-  }
+  const session = await auth()
+  if (!session?.user) redirect('/login')
+  if (session.user.role !== 'admin') redirect('/')
 
   return (
     <div className="min-h-screen bg-gray-50">

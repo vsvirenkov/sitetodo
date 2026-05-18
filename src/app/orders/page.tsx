@@ -1,14 +1,10 @@
-import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { redirect } from 'next/navigation'
+import { auth } from '@/lib/auth'
 import OrdersList from '@/components/OrdersList'
 
 export default async function OrdersPage() {
-  const supabase = await createServerSupabaseClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect('/login')
-  }
+  const session = await auth()
+  if (!session?.user) redirect('/login')
 
   return (
     <div className="min-h-screen bg-gray-50">

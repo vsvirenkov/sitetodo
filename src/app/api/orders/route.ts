@@ -1,12 +1,12 @@
-import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { NextResponse } from 'next/server'
+import { desc, eq } from 'drizzle-orm'
+import { auth } from '@/lib/auth'
+import { db, schema, ensureSchema } from '@/lib/db/client'
 
 export async function POST(request: Request) {
   try {
-    const supabase = await createServerSupabaseClient()
-    const { data: { user } } = await supabase.auth.getUser()
-
-    if (!user) {
+    const session = await auth()
+    if (!session?.user?.id) {
       return NextResponse.json({ error: 'Необходимо авторизоваться' }, { status: 401 })
     }
 
@@ -17,10 +17,17 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Заполните все обязательные поля' }, { status: 400 })
     }
 
-    const { data, error } = await supabase
-      .from('orders')
-      .insert({
-        user_id: user.id,
+    const validPackages = ['basic', 'standard', 'premium']
+    const validTemplates = ['business', 'portfolio', 'restaurant']
+    if (!validPackages.includes(packageType) || !validTemplates.includes(template)) {
+      return NextResponse.json({ error: 'Недопустимый пакет или шаблон' }, { status: 400 })
+    }
+
+    await ensureSchema()
+    const [order] = await db
+      .insert(schema.orders)
+      .values({
+        user_id: session.user.id,
         company_name: companyName,
         phone,
         email,
@@ -31,15 +38,9 @@ export async function POST(request: Request) {
         comments: comments || null,
         status: 'new',
       })
-      .select()
-      .single()
+      .returning()
 
-    if (error) {
-      console.error('Supabase error:', error)
-      return NextResponse.json({ error: 'Ошибка при создании заказа' }, { status: 500 })
-    }
-
-    return NextResponse.json({ order: data }, { status: 201 })
+    return NextResponse.json({ order }, { status: 201 })
   } catch (err) {
     console.error('Server error:', err)
     return NextResponse.json({ error: 'Внутренняя ошибка сервера' }, { status: 500 })
@@ -48,25 +49,19 @@ export async function POST(request: Request) {
 
 export async function GET() {
   try {
-    const supabase = await createServerSupabaseClient()
-    const { data: { user } } = await supabase.auth.getUser()
-
-    if (!user) {
+    const session = await auth()
+    if (!session?.user?.id) {
       return NextResponse.json({ error: 'Необходимо авторизоваться' }, { status: 401 })
     }
 
-    const { data, error } = await supabase
-      .from('orders')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
+    await ensureSchema()
+    const orders = await db
+      .select()
+      .from(schema.orders)
+      .where(eq(schema.orders.user_id, session.user.id))
+      .orderBy(desc(schema.orders.created_at))
 
-    if (error) {
-      console.error('Supabase error:', error)
-      return NextResponse.json({ error: 'Ошибка при получении заказов' }, { status: 500 })
-    }
-
-    return NextResponse.json({ orders: data })
+    return NextResponse.json({ orders })
   } catch (err) {
     console.error('Server error:', err)
     return NextResponse.json({ error: 'Внутренняя ошибка сервера' }, { status: 500 })
