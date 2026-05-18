@@ -1,12 +1,33 @@
+import fs from 'node:fs'
+import path from 'node:path'
 import { createClient } from '@libsql/client'
 import { drizzle } from 'drizzle-orm/libsql'
 import * as schema from './schema'
 
-const url = process.env.DATABASE_URL || 'file:./data/app.db'
+const rawDatabaseUrl = process.env.DATABASE_URL || 'file:./data/app.db'
+const databaseUrl = prepareDatabaseUrl(rawDatabaseUrl)
 
-const client = createClient({ url })
+const client = createClient({ url: databaseUrl })
 
 let initPromise: Promise<void> | null = null
+
+function prepareDatabaseUrl(rawUrl: string): string {
+  if (!rawUrl.startsWith('file:')) {
+    return rawUrl
+  }
+
+  const filePart = rawUrl.slice(5).split('?')[0]
+  const dbPath = path.isAbsolute(filePart)
+    ? filePart
+    : path.resolve(process.cwd(), filePart)
+
+  fs.mkdirSync(path.dirname(dbPath), { recursive: true })
+  if (!fs.existsSync(dbPath)) {
+    fs.writeFileSync(dbPath, '')
+  }
+
+  return rawUrl
+}
 
 export function ensureSchema(): Promise<void> {
   if (initPromise) return initPromise
